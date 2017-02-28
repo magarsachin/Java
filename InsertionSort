@@ -1,0 +1,36 @@
+// Insertion sort using recursion
+public class recursiveInsertion {
+	
+	public static void main(String[] args) {
+		
+		int []a = {13,2,7,22,3,135,8,1,7};
+		
+		Insertion ob = new Insertion();
+		ob.insertionSort(a,a.length);
+   for(int m=0; m<a.length; m++)
+	 System.out.print(" "+a[m]);
+	}
+
+}
+ class Insertion{
+	 		 
+	 public void insertionSort(int a[],int len){
+		 
+		 int i=0,key=0;
+	
+		 key = a[len-1];
+		 len--;
+		 if (len>1)
+		 insertionSort(a,len);
+		 
+			 i = len-1;
+			 while (i>=0 && a[i]>key){
+				 a[i+1]=a[i];
+				 i=i-1;
+				 }
+				 a[i+1]=key;
+				
+		 }
+}
+	 
+ 
