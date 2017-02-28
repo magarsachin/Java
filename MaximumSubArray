@@ -1,0 +1,31 @@
+
+// Solution for maximum subarray using brute force approach
+class Max{
+	
+ public void getMaxArray(int []array){
+	int sum=0, max=0;
+	int solution[] = new int[2];
+	 for (int i=0;i<array.length; i++){
+		 sum = 0;
+		for(int j=i;j<array.length; j++) {
+			sum = sum+array[j];
+			if (sum > max){
+				solution[0]=i+1;
+				solution[1]=j+1;
+				max = sum;
+			}
+		}
+	 }
+	 System.out.println("Maximum sub array is from index "+solution[0]+" to "+solution[1]);
+	 }
+}
+	
+public class MaxSubArray {
+ public static void main(String[] args) {
+	
+	Max ob = new Max();
+	int array[] = {1,122,-3,8,-4,-5,19};
+	
+	ob.getMaxArray(array);
+}
+}
