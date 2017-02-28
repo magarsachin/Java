@@ -1,0 +1,50 @@
+// Implementation of stack using array
+class TestStackUsingArray{
+	int max = 10;
+	int stack[] = new int[10];
+	int top = -1;
+	public void push(int element){
+		if (top < max-1){
+		stack[++top] = element;
+		System.out.println("Object inserted at "+ top);
+		}
+		else{
+			  System.out.println("Stack overflow");
+		}
+		    
+	}
+	public void pop(){
+		if (top > -1){
+		System.out.println("object deleted from"+ top--);
+		}
+	}
+	public void display(){
+		System.out.println("Current stack");
+		for (int i=0;i<=top ;i++){
+		  System.out.println(stack[i]);	
+		}
+		
+	}
+
+	
+}
+
+public class StackUsingArray {
+	
+public static void main(String[] args) {
+
+	
+	TestStackUsingArray ob = new TestStackUsingArray();
+	
+	
+	for (int i=0;i<15; i++)	
+		    ob.push(i);
+
+	for (int j=0; j<5;j++)
+		ob.pop();
+	
+	ob.display();
+}
+}
+
+
