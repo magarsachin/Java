@@ -1,0 +1,74 @@
+
+// Maximum subarray using divide and conquer
+class Max2 {
+
+
+	public int[] getMaxArray(int []array, int start, int end){
+		int [] solution = new int[3];
+		int [] leftSolution = new int[3];
+		int [] rightSolution = new int[3];
+		int [] crossSolution = new int[3];
+		int mid = 0;
+
+		
+		if (start==end){
+			solution[0]= start;
+			solution[1]= end;
+			solution[2]= array[start-1];
+			return solution;
+			
+		}
+		else{ mid = (start+end)/2;
+		leftSolution = getMaxArray(array,start,mid);
+		rightSolution = getMaxArray(array,mid+1,end);
+		crossSolution = getMaxCrossArray(array,start,mid,end);
+		
+		if ((leftSolution[2] >= rightSolution[2])&& (leftSolution[2]>= crossSolution[2]))
+			return leftSolution;
+		else if((rightSolution[2] >= leftSolution[2])&& (rightSolution[2]>= crossSolution[2])) 
+			return rightSolution;
+		else return crossSolution;
+		}
+		}
+	
+	public int[] getMaxCrossArray (int []array, int start, int mid, int end){
+		int leftSum = Integer.MIN_VALUE;
+		int rightSum = Integer.MIN_VALUE;
+		int sum =0;
+		int maxLeft = 0, maxRight=0;
+		int [] crossSolution = new int[3];
+		for (int i=mid; i>= start; i--){
+		  sum = sum + array[i-1];
+		  if (sum > leftSum){	
+			  leftSum = sum;
+			  maxLeft = i;
+		  }
+		  
+		}
+		sum = 0;
+		for (int j= mid+1; j<=end; j++){
+			sum = sum + array[j-1];
+			if (sum > rightSum){
+				  rightSum = sum;
+				  maxRight = j;
+			  }
+		}
+		        crossSolution[0]= maxLeft;
+				crossSolution[1]= maxRight;
+				crossSolution[2]= leftSum + rightSum;;
+				return crossSolution;
+	}
+		
+	}
+
+public class MaxSubArrayDivCon {
+	
+	public static void main(String[] args) {
+		Max2 ob= new Max2();	
+		int []array = {1,5,-4,3};
+		int [] answer = new int[3];
+		answer = ob.getMaxArray(array,1,array.length);
+		System.out.println(answer[0] + " "+ answer[1]+" "+ answer[2]);
+	}
+
+}
