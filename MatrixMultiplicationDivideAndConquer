@@ -1,0 +1,97 @@
+
+// Matrix multiplication using Dynamic Programming
+class TestMatrixMultiply {
+	public int[][] multiply(int [][]A,int [][]B){
+		
+		int n = A.length;
+		int C[][] = new int[n][n];
+		
+		if (n==1){
+			C[0][0] = A[0][0] * B[0][0];
+		     return C; 
+		}
+		else{ 
+			int A11[][] = split(A,n,0,n/2-1,0,n/2-1); 
+		    int A12[][] = split(A,n,0,n/2-1,n/2,n-1);
+		    int A21[][] = split(A,n,n/2,n-1,0,n/2-1);
+    		int A22[][] = split(A,n,n/2,n-1,n/2,n-1);
+			int B11[][] = split(B,n,0,n/2-1,0,n/2-1);
+			int B12[][] = split(B,n,0,n/2-1,n/2,n-1);
+			int B21[][] = split(B,n,n/2,n-1,0,n/2-1);
+	    	int B22[][] = split(B,n,n/2,n-1,n/2,n-1);
+		    	    			
+		    int [][] C11 = add(multiply(A11,B11),multiply(A12,B21));
+		    int [][] C12 = add(multiply(A11,B12),multiply(A12,B22));
+		    int [][] C21 = add(multiply(A21,B11),multiply(A22,B21));
+		    int [][] C22 = add(multiply(A21,B12),multiply(A22,B22));
+		    
+
+		    C = merge(C11,C12,C21,C22);
+		}
+		return C;
+   
+	}
+	public int[][] split(int A[][],int n,int istart,int iend, int jstart, int jend){
+		int splitedMatrix [][] = new int [n/2][n/2];
+		int i,j,k,l;
+		for ( i=istart,k =0;k < n/2 && i <= iend;i++,k++){
+			   for(j=jstart,l=0;j<=jend && l< n/2 ;j++,l++){
+				   splitedMatrix[k][l]= A[i][j];
+				   System.out.print(splitedMatrix[k][l]+ " ");
+			   }	
+			   System.out.println();
+	}
+		return splitedMatrix;
+	}
+
+public int[][] add (int [][]A,int [][]B){
+	int addition[][] = new int [A.length][A.length];
+		   for (int i=0;i<A.length;i++)
+			   for(int j=0;j<A.length;j++){
+				   addition[i][j]=A[i][j]+B[i][j];
+			   }
+           return addition;
+}
+public int[][] merge (int [][]C11, int[][]C12,int [][]C21, int [][]C22){
+	int [][] C = new int[C11.length *2][C11.length *2];
+	int i,j,k,l;
+	for (i=0;i <C11.length;i++){
+		for (j=0; j<C11.length;j++)
+			C[i][j] = C11[i][j];
+		for (k=0;j<C12.length*2;j++,k++)  
+			C[i][j] = C12[i][k];
+	}
+	for (k=0;i<C11.length*2;i++,k++){
+		for (j=0; j<C11.length;j++)
+			C[i][j] = C21[k][j];
+		for (l=0;j<C12.length*2;j++,l++)  
+			C[i][j] = C22[k][l];
+	}
+	return C;
+
+}
+}
+public class MatrixMultiplyDC {
+public static void main(String[] args) {
+ int A[][] = {{1,1,1,1},
+			  {1,1,1,1},
+              {1,1,1,1},
+              {1,1,1,1}};
+ int B[][] = {{2,2,2,2},
+		      {2,2,2,2},
+		      {2,2,2,2},
+		      {2,2,2,2},};
+ int C[][] = new int[A.length][A.length];
+ 
+ TestMatrixMultiply ob = new TestMatrixMultiply();
+   
+    C = ob.multiply(A,B);
+ 
+    for (int i=0;i <C.length;i++){
+		for (int j=0; j<C.length;j++)
+			System.out.print(C[i][j]+ " ");
+		System.out.println();
+    }
+	}
+}
+
