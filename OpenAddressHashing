@@ -1,0 +1,89 @@
+
+// Implementation of open address hashing with operations like
+// insert, delete, search and display
+class OpenHash {
+//	Array to store keys
+	int []A = new int[12];
+	
+//hash function
+	public int hash (int key){
+		return key %11;
+	}
+//	Insert method
+	public void insert(int key){
+//		initial index from hash function
+		int i = hash(key);
+//		if the slot is vacant
+//		no collision condition
+		if (A[i] == 0) {
+			A[i] = key;
+		}
+		else{
+//			collision handling logic
+//      linear probe
+//		-1 is for deleted elements	
+		while (A[i] != 0) {
+			if (A[i]== -1)
+				break;
+//			12 is array size
+			i = (i+1)%12;
+		   }
+		A[i] = key;	 
+		}
+    }		
+	public  void display(){
+		for (int i=0;i<A.length;i++){
+//			for empty nodes
+			if (A[i]== 0){
+				System.out.println(i + " th slot is vacant");
+				continue;
+			}
+
+			else{
+				System.out.println(i + " th slot has value "+ A[i]);
+			}
+		}
+    }
+	
+	public void delete(int key){
+
+				int p = hash(key);
+				while (A[p]!= key){
+					if (A[p]== 0)
+						break;
+					else
+					p = (p+1) % 12;
+				}
+				if (A[p]!= 0)
+					A[p] = -1;
+			}
+			
+	public int search (int key){
+		int i = hash(key);
+		while (A[i]!= key){
+			if (A[i] == 0)
+//			12 is array size
+			i = (i + 1)% 12;
+	     	}
+		if (A[i] == key)
+		  return i;
+		else 
+//			-1 means element not found
+			return -1;
+	} 
+}
+public class OpenAddressHashing {
+public static void main(String[] args) {
+	OpenHash ob = new OpenHash();
+	
+	int a[] =  {1,2,3,4,12,23,22};
+	 
+	for  (int i=0; i<a.length;i++)
+		ob.insert(a[i]);
+	ob.display();
+	ob.delete(12);
+	ob.display();
+	ob.insert(35);
+	ob.display();
+}
+}
