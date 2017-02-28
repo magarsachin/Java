@@ -1,0 +1,130 @@
+
+// Implementation of chained hash table
+// node class for linked list
+// has fields key next and prev
+class ChainHashDLLNode {
+	int key;
+	ChainHashDLLNode next;
+	ChainHashDLLNode prev;
+//	constructor for used when array id created
+	public ChainHashDLLNode(){
+		key = 0;
+		prev = this;
+		next = null;
+	}
+//	constructor used when pointer and new_node is created
+	public ChainHashDLLNode(int key){
+		this.key = key;
+		this.next = null;
+		this.prev = this;		
+	}
+}	
+
+class ChainHash {
+
+
+	ChainHashDLLNode []A = new ChainHashDLLNode[12];
+//	used when new_node is to be inserted
+//	creation inside the method gives error
+	ChainHashDLLNode new_node ;
+//	used as a pointer
+	ChainHashDLLNode pointer = new ChainHashDLLNode();
+//	hash function
+	public int hash (int key){
+		return key %11;
+	}
+//	Insert method
+	public void insert(int key){
+//		initial index from hash function
+		int i = hash(key);
+//		if the slot is vacant
+//		no collision condition
+		if (A[i] == null) {
+			A[i] = new ChainHashDLLNode(key);
+		}
+		else{
+//			collision handling logic
+			new_node = new ChainHashDLLNode(key);
+//			linking new node to existing node in the list
+//			A[i].prev will be A[i] initially since it is declared in constructor
+//			will modify A[i].prev to current so list will be circular and 
+//			every new node will be inserted next to A[i].prev
+//			A[i].prev always be will be last node
+			new_node.prev = A[i].prev;
+//			set new_node as next of current last node
+			A[i].prev.next = new_node;
+//			set recently added node as previous of first pointer
+			A[i].prev = new_node;
+
+		}
+	}
+	public  void display(){
+		for (int i=0;i<A.length;i++){
+//			for empty nodes
+			if (A[i]== null){
+				System.out.println(i + " th slot is vacant");
+				continue;
+			}
+//			when no collision occured at i
+			if (A[i].next == null)
+			 System.out.println(i + " th position "+A[i].key);
+			else{
+//				collision has occured and linked list has formed
+				pointer = A[i];
+				System.out.print(i + " th position ");
+//				to traverse all nodes in linked list
+				while (pointer != null){
+					System.out.print(pointer.key + " ");
+					pointer = pointer.next;
+					
+				}
+				System.out.println();
+			}
+		}
+    }
+	
+	public void delete(int key){
+
+			
+				pointer = A[hash(key)];
+//				logic for 1 st element
+				if (pointer != null && pointer.key == key){
+					pointer.next.prev = pointer.prev;
+					A[hash(key)] = pointer.next;
+				}
+				else {
+				while (pointer != null){
+//					if node to be deleted is somewhere in between the list
+					if (pointer.key == key && pointer.next != null){
+						pointer.prev.next = pointer.next;
+					    pointer.next.prev = pointer.prev;
+					    break;
+					}
+//					when node to be deleted is last node in list
+					else if (pointer.key == key && pointer.next == null){
+						pointer.prev.next = null;
+						break;
+					}
+					else	
+						pointer = pointer.next;
+				}
+			}
+//			}
+//			}
+//		}
+	}
+}
+
+public class ChainedHashTable {
+public static void main(String[] args) {
+	ChainHash ob = new ChainHash();
+	int a[] = {2,13,24,7,4,54,33,25,68,79,74,9};
+	
+	for (int i=0; i<a.length; i++)
+		ob.insert(a[i]);
+
+	ob.display();
+	ob.delete (1);
+	ob.display();
+}
+}
