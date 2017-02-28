@@ -1,0 +1,46 @@
+
+// Implementation of circular Queue using array
+class TestCircularQueueArray{
+	int size = 10;
+	int []queue = new int[size] ;
+	int front = 0;
+	int rear = 0;
+	
+	public void insert(int element){
+		if (rear - front == size)
+			System.out.println("Queue overflow");
+		else{
+//when last element is filled and we need to fill 1st element rear++ will give out of bound excwprion			
+			queue[rear%size] = element;
+			rear++;
+			System.out.println("Element "+element+" inserted at "+ rear);
+			    }
+		}
+	
+	public void delete(){
+		if ( front > rear)
+			System.out.println("Queue is empty");
+		else
+		System.out.println("Element deleted from "+ front++);
+	}
+	public void display(){
+		for (int i= front; i<rear;i++)
+			System.out.print(queue[i%size]+"  ");
+		System.out.println();
+	}
+}
+public class CircularQueueArray {
+public static void main(String[] args) {
+	TestCircularQueueArray ob = new TestCircularQueueArray();
+	
+	for (int i=0;i<12;i++)
+		ob.insert(i);
+	ob.display();
+	for (int i=0;i<5;i++)
+		ob.delete();
+	ob.display();
+	for (int i=0;i<8;i++)
+		ob.insert(i);
+	ob.display();
+}
+}
