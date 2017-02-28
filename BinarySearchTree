@@ -1,0 +1,285 @@
+
+// To implement a Binary Search Tree and all basc operations like
+// insert, delete, search, and traverse (Inorder, preorder, post order)
+class BSTNode{
+	int key;
+	BSTNode left;
+	BSTNode right;
+	
+	public BSTNode(){
+		this.key = 0;
+		this.left = null;
+		this.right = null;
+	}
+	public BSTNode(int key){
+		this.key = key;
+		this.left = null;
+		this.right = null;
+	}
+}
+
+
+class BuildBST{
+	BSTNode root = new BSTNode();
+	int size = 0;
+//	for iterative search
+//	public boolean isPresent (BSTNode x, int key){
+//			
+//		if(x.key == key)
+//			  return true;
+//		else{
+//			if  (x.left != null)
+//			isPresent (x.left,key);
+//			if  (x.right != null)
+//			isPresent (x.right,key);
+//			}
+//		return false;
+//	}
+	public BSTNode search (int key){
+		BSTNode temp_node = new BSTNode(key);
+		temp_node = root;
+//		BSTNode parent_node = root;
+//		for iterative search
+//		boolean result = isPresent (temp_node,key);
+//		return result;
+//		
+//		Iterative approach
+		while (temp_node != null){
+		if (temp_node.key == key)
+			return temp_node;
+		else if (key < temp_node.key ){
+//			parent_node = temp_node;
+			temp_node = temp_node.left;
+		}
+		else {
+//			parent_node = temp_node;
+			temp_node = temp_node.right;
+		}
+		}
+		return null;
+	}
+	
+	public void insert (int key){
+		BSTNode current_node = new BSTNode(key);
+		BSTNode temp_node = root;
+		BSTNode trail_node = root;
+		
+		if (size ==0){
+			root = current_node;
+			size++;
+		}
+		else {		
+				
+			while (temp_node != null){
+				if ( key <= temp_node.key ){
+					trail_node = temp_node;
+					temp_node = temp_node.left;
+				}
+				else if (key > temp_node.key) {
+					trail_node = temp_node;
+					temp_node = temp_node.right;
+				}
+			}
+			if (current_node.key <= trail_node.key)
+				trail_node.left = current_node;
+			else
+				trail_node.right = current_node;
+		}
+	}
+	public void intreewalk(BSTNode x){
+		if (x == null)
+			return;
+		else {
+		 
+		 intreewalk (x.left);
+		 System.out.print(x.key +" ");
+		 intreewalk (x.right);
+		}
+	}
+	public void pretreewalk(BSTNode x){
+		if (x == null)
+			return;
+		else {
+		System.out.print(x.key +" ");
+		 intreewalk (x.left);		 
+		 intreewalk (x.right);
+		}
+	}
+	public void posttreewalk(BSTNode x){
+		if (x == null)
+			return;
+		else {
+		 
+		 intreewalk (x.left);		 
+		 intreewalk (x.right);
+		 System.out.print(x.key +" ");
+		}
+	}
+	
+	public void display(){
+//		BSTNode temp_node = new BSTNode();
+//		temp_node = root;
+		
+//	recursive method	
+		intreewalk(root);
+		System.out.println();
+//		pretreewalk(root);
+//		System.out.println();
+//		posttreewalk(root);
+//		System.out.println();
+		
+//		iterative method
+		
+//		System.out.print(root.key + " ");
+//		while (temp_node!= null){
+//		if (temp_node.left != null){
+//			temp_node = temp_node.left;
+//			System.out.print(temp_node.key + " ");
+//		}
+//		else if (temp_node.right != null){
+//			temp_node = temp_node.right;
+//			System.out.print(temp_node.key + " ");
+//		}
+			
+	}
+//	Used in delete method 
+	public BSTNode successor(BSTNode x){
+//		Assigning first right child of item to be deleted
+		BSTNode temp_node = x.right;
+//	minimum item will only be present in left side of temp_node	
+		while (temp_node.left != null)
+			temp_node = temp_node.left;
+		
+		return temp_node;
+		
+	}
+	public void delete(int key){
+//		Check if such node is present in BST
+		BSTNode delete_node = search (key);
+//		If not present say no such node is present
+    if (delete_node == null)
+    	System.out.println("No such node");
+    else{
+//	procedure to delete node
+//	at this point we are sure that list contains the key
+
+//		reset delete_node to root in order to find its parent
+//		will have traverse whole tree keeping a back pointer
+			delete_node = root;
+			BSTNode parent_node = new BSTNode();
+//			same while loop as search
+//			used to find parent of delete_node
+//			same logic could be implemented in search method but 2 nodes cannot be
+//			returned with return statement
+
+			while (delete_node != null){
+				if (delete_node.key == key)
+					break;
+				else if (key < delete_node.key ){
+					parent_node = delete_node;
+					delete_node = delete_node.left;
+				}
+				else {
+					parent_node = delete_node;
+					delete_node = delete_node.right;
+				}
+			}
+			
+//		condition 1 -delete node does not have a child
+//	    directly delete the node		
+			if (delete_node.left == null && delete_node.right == null){
+			 if (parent_node.left == delete_node)
+				 parent_node.left = null;
+			 else
+				parent_node.right = null;
+			}
+//			condition 2 - delete_node has only  left child
+			else if (delete_node.left != null && delete_node.right == null 
+					 && delete_node.left.left == null && delete_node.left.right == null){
+				delete_node.key = delete_node.left.key;
+//				delete_node.right = delete_node.left.right;
+				delete_node.left = null;
+			}
+//			condition 2 - delete_node has only one right child
+			else if (delete_node.left == null && delete_node.right != null
+					&& delete_node.right.left == null && delete_node.right.right == null ){
+				delete_node.key = delete_node.right.key;
+//				delete_node.left = delete_node.right.left;
+				delete_node.right = null;
+				
+			}
+//			condition 3 delete node has 2 childs
+//			solution is to find successor of delete_node
+//			successor is minimum node in right sub tree
+			else{
+//				call successor method 
+				BSTNode successor = successor (delete_node);
+//				swap delete_node with successor
+                BSTNode temp_for_swap = new BSTNode();
+                temp_for_swap.key = delete_node.key;
+                delete_node.key = successor.key;
+//                successor.key = temp_for_swap.key;
+//               repeat procedure 1 and 2 for successor  
+                parent_node = delete_node;
+                BSTNode temp_for_successor = delete_node.right;
+//                to find parent of successor
+                while (temp_for_successor != null){
+    				if (temp_for_successor.key == successor.key)
+    					break;
+    				else if (successor.key < temp_for_successor.key ){
+    					parent_node = temp_for_successor;
+    					temp_for_successor = temp_for_successor.left;
+    				}
+    				else {
+    					parent_node = temp_for_successor;
+    					temp_for_successor = temp_for_successor.right;
+    				}
+    			}
+//                case 1 successor has no child nodes
+//                delete it directly 
+                if (temp_for_successor.left == null && temp_for_successor.right == null){
+       			 if (parent_node.left == successor)
+       				 parent_node.left = null;
+       			 else
+       				parent_node.right = null;
+       			}
+//          	  condition 2 - delete_node has only left child(can be a subtree)
+//                less likely to occur because successor is left most node
+    			else if (temp_for_successor.left != null && temp_for_successor.right == null){
+    				temp_for_successor.key = temp_for_successor.left.key;
+    				temp_for_successor.right = temp_for_successor.left.right;
+    				temp_for_successor.left = null;
+    			}
+//    			condition 2 - delete_node has only  right child (ca be a subtree)
+    			else if (temp_for_successor.left == null && temp_for_successor.right != null){
+    				
+    				temp_for_successor.key = temp_for_successor.right.key;
+    				temp_for_successor.left = temp_for_successor.right.left;
+    				temp_for_successor.right = null;
+    				
+    				
+    			}
+       			}
+			}
+	}
+}
+	
+
+public class BinarySearchTree {
+
+	public static void main(String[] args) {
+		int []A = {8,5,2,9,3,7,1,12,4,11};
+		
+		BuildBST ob = new BuildBST();
+
+
+		for (int i =0; i<A.length; i++)
+			ob.insert(A[i]);
+
+		ob.display();
+//		ob.delete(7);
+		ob.delete(11);
+		ob.display();
+
+	}
+}
