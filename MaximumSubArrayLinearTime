@@ -1,0 +1,38 @@
+
+// O(n) Solution for maximum sub array problem
+class Max3{
+	public void getMaxArray(int []array){
+   int sum, max1=0, max2=0;
+   sum = 0;
+   
+   int ans[] = new int [2];
+		for (int i=0; i<array.length; i++){
+			
+			sum = max1 + array[i];
+			
+			if (sum>array[i]){
+				max1 = sum;
+			   }
+			else{
+				max1 = array[i];
+			    ans[0]=i;
+			}
+			if (max1>max2){
+				max2 = max1;
+			    ans[1]= i;}
+			           
+		}
+		System.out.println(max2);
+		System.out.println(ans[0]+" "+ans[1]);
+}
+}
+public class MaxSubArrayLT {
+	public static void main(String[] args) {
+		
+		Max3 ob = new Max3();
+		int []array = {1,9,-6,-3,2,5,-4,-5};
+		ob.getMaxArray(array);
+		
+	}
+
+}
